@@ -14,7 +14,17 @@ var gulp         = require('gulp'), // Подключаем Gulp
 	autoprefixer = require('gulp-autoprefixer'), // Подключаем библиотеку для автоматического добавления префиксов
 	jade		 = require('gulp-pug'),
 	plumber 	 = require('gulp-plumber'),
-	spritesmith	 = require('gulp.spritesmith');
+	spritesmith	 = require('gulp.spritesmith'),
+	uncss 		 = require('gulp-uncss');
+
+//uncss
+gulp.task('uncss', function () {
+    return gulp.src('app/css/main.css')
+        .pipe(uncss({
+            html: ['app/index.html']
+        }))
+        .pipe(gulp.dest('app/css'));
+});
 
 //spritesmith
 
@@ -112,10 +122,11 @@ gulp.task('img', function() {
 		.pipe(gulp.dest('dist/img')); // Выгружаем на продакшен
 });
 
-gulp.task('build', ['clean', 'img', 'stylus', 'scripts'], function() {
+gulp.task('build', ['clean', 'img', 'stylus', 'uncss', 'scripts'], function() {
 
 	var buildCss = gulp.src([ // Переносим библиотеки в продакшен
 		'app/css/main.css',
+		'app/css/main.min.css',
 		'app/css/libs.min.css'
 		])
 	.pipe(gulp.dest('dist/css'))

@@ -23,6 +23,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-stylus": "^2.6.0",
     "gulp-uglifyjs": "^0.6.2",
+    "gulp-uncss": "^1.0.6",
     "gulp.spritesmith": "^6.3.0",
     "imagemin-pngquant": "^4.2.2"
   }
