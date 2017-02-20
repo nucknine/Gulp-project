@@ -17,6 +17,7 @@ var gulp         = require('gulp'), // Подключаем Gulp
 	spritesmith	 = require('gulp.spritesmith'),
 	uncss 		 = require('gulp-uncss');
 
+
 //uncss
 gulp.task('uncss', function () {
     return gulp.src('app/css/main.css')
@@ -70,12 +71,22 @@ gulp.task('stylus', function () {
     .pipe(browserSync.reload({stream: true}));
 });
 
-//browser-sync
+//sass
+gulp.task('sass', function(){ // Создаем таск Sass
+	return gulp.src('app/sass/**/*.scss') // Берем источник
+		.pipe(plumber())
+		.pipe(sass()) // Преобразуем Sass в CSS посредством gulp-sass
+		.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true })) // Создаем префиксы
+		.pipe(gulp.dest('app/css')) // Выгружаем результата в папку app/css
+		.pipe(browserSync.reload({stream: true})) // Обновляем CSS на странице при изменении
+});
+
 gulp.task('browser-sync', function() { // Создаем таск browser-sync
 	browserSync({ // Выполняем browserSync
 		server: { // Определяем параметры сервера
 			baseDir: 'app' // Директория для сервера - app
 		},
+		files: ["app/js/*.js", "app/*.html", "app/*.php", "app/css/*.css"],
 		notify: false // Отключаем уведомления
 	});
 });
@@ -102,9 +113,9 @@ gulp.task('css-libs', ['stylus'], function() {
 
 gulp.task('watch', ['browser-sync', 'sprite', 'css-libs', 'scripts'], function() {
 	gulp.watch('app/jade/**/*.pug', ['jade']); // Наблюдение за sass файлами в папке sass
-	gulp.watch('app/stylus/**/*.styl', ['stylus']); // Наблюдение за sass файлами в папке sass
-	gulp.watch('app/*.html', browserSync.reload); // Наблюдение за HTML файлами в корне проекта
-	gulp.watch('app/js/**/*.js', browserSync.reload);   // Наблюдение за JS файлами в папке js
+	gulp.watch('app/stylus/**/*.styl', ['stylus', 'css-libs']); // Наблюдение за sass файлами в папке sass
+	//gulp.watch('app/*.html', browserSync.reload); // Наблюдение за HTML файлами в корне проекта
+	//gulp.watch('app/js/**/*.js', browserSync.reload);   // Наблюдение за JS файлами в папке js
 });
 
 gulp.task('clean', function() {
@@ -126,7 +137,6 @@ gulp.task('build', ['clean', 'img', 'stylus', 'uncss', 'scripts'], function() {
 
 	var buildCss = gulp.src([ // Переносим библиотеки в продакшен
 		'app/css/main.css',
-		'app/css/main.min.css',
 		'app/css/libs.min.css'
 		])
 	.pipe(gulp.dest('dist/css'))

@@ -1,3 +1,32 @@
+//adaptive media
+adaptive(media)
+  if media == smart
+    @media only screen and (max-width: 480px) {block}
+  else if media == tablet
+    @media only screen and (min-width: 481px) and (max-width: 1024px) {block}
+  else if media == pc
+    @media only screen and (min-width: 1025px) {block}
+
+// Fonts mixin
+font-url(file)
+  return '../fonts/' + file
+
+webfont(family, file, hack-chrome-windows = false, weight = 'normal')
+  @font-face
+    font-family family
+    src url(font-url(file + '.eot'))
+    src url(font-url(file + '.eot?#iefix')) format('embedded-opentype'),
+        url(font-url(file + '.woff')) format('woff'),
+        url(font-url(file + '.ttf')) format('truetype'),
+        url(font-url(file + '.svg#'+ family)) format('svg')
+    font-weight weight
+    font-style normal
+  if hack-chrome-windows
+    @media screen and (-webkit-min-device-pixel-ratio:0)
+      @font-face
+        font-family family
+        src url(font-url(file + '.svg#'+ family)) format('svg')
+
 spriteWidth($sprite)
     width $sprite[4]
 
