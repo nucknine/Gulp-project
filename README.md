@@ -15,5 +15,5 @@ List of plugins
 "gulp-stylus"
 "gulp-uglifyjs"
 "gulp.spritesmith"
-"imagemin-pngquant"
-"gulp-uncss"
+"imagemin-pngquant":
+"

@@ -1,3 +1,47 @@
+//common mixins
+cols(n=3, m=10)
+  margin-right m px
+  width ((100% - (((@margin-right * n) / wrapper-width) * 100%)) / n)
+  &:last-child
+    margin-right 0px
+
+size(w=100%, h=auto)
+  width w
+  height h
+
+red(color=red)
+  background color
+
+inline()
+  display inline-block
+  vertical-align top
+
+shadow()
+  box-shadow 0 10px 15px rgba(0,0,0,0.4)
+
+btn()
+  inline()
+  box-sizing border-box
+  cursor pointer
+  height 60px
+  line-height 60px
+  text-align center
+  text-decoration none
+  min-width 170px
+  background-color gray
+  padding-left 20px
+  padding-right 20px
+  font-size 18px
+  color white
+  border-radius 30px
+  transition box-shadow 0.3s ease-out
+  &:hover
+    shadow-btn()
+  &_red
+    background-color rgba(255,86,86,.8)
+  &_blue
+    background-color rgba(106,126,252,.8)
+
 //adaptive media
 adaptive(media)
   if media == smart
@@ -26,6 +70,8 @@ webfont(family, file, hack-chrome-windows = false, weight = 'normal')
       @font-face
         font-family family
         src url(font-url(file + '.svg#'+ family)) format('svg')
+
+//pngsprites
 
 spriteWidth($sprite)
     width $sprite[4]
